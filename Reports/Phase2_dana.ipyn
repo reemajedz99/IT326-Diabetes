@@ -1,0 +1,246 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPFMvHEsZsNf3Y36uSTaI/e",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/reemajedz99/IT326-Diabetes/blob/main/Reports/Phase2_dana.ipyn\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**3-Variabale Transformation**"
+      ],
+      "metadata": {
+        "id": "Qo_7zg-1oYhT"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Description**:\n",
+        "The code applies variable transformation by deriving a new attribute, Cholesterol_Ratio, from two existing attributes: CholesterolTotal divided by CholesterolHDL. The original columns were kept unchanged."
+      ],
+      "metadata": {
+        "id": "d0vuiUH_QltF"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Justification**:\n",
+        "Total cholesterol and HDL each describe only part of a patient's lipid profile. Their ratio is a widely used clinical indicator of metabolic and cardiovascular risk, and it summarizes both measurements in a single meaningful value. Creating it gives the mining algorithms a more informative feature than either raw attribute alone."
+      ],
+      "metadata": {
+        "id": "y4JAwiBYRQvG"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Preprocessing Result**: A new numeric attribute, Cholesterol_Ratio, was added, ranging from 1.57 to 14.41 with a mean of 4.55. The original attributes were preserved and the processed data was saved separately as Preprocessed_dataset."
+      ],
+      "metadata": {
+        "id": "7mcbwXdYgWgZ"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**How it improved the dataset**:\n",
+        "The transformation combined two related measurements into one interpretable feature that captures the balance between total and \"good\" cholesterol, enriching the dataset for classification and clustering without losing any original information."
+      ],
+      "metadata": {
+        "id": "XrDa8OZBg0cK"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "raw_df=pd.read_csv(\"/diabetes_data.csv\")\n",
+        "df = raw_df.copy()"
+      ],
+      "metadata": {
+        "id": "S5Iq25oSRfjv"
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "bins = [25, 40, 60, 91]\n",
+        "labels = [\"Young\", \"Middle-Aged\", \"Senior\"]"
+      ],
+      "metadata": {
+        "id": "Ioa0Oq39Wk4G"
+      },
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df[\"Cholesterol_Ratio\"] = df[\"CholesterolTotal\"] / df[\"CholesterolHDL\"]"
+      ],
+      "metadata": {
+        "id": "7ZV0QHW2WmdU"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"Raw dataset snapshot:\")\n",
+        "print(raw_df[[\"PatientID\", \"CholesterolTotal\", \"CholesterolHDL\", \"Diagnosis\"]].head(10))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZsdsPWozXLFc",
+        "outputId": "4177bfa9-ab82-4ae6-8d15-2696635a8e57"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Raw dataset snapshot:\n",
+            "   PatientID  CholesterolTotal  CholesterolHDL  Diagnosis\n",
+            "0       6000        254.270670       70.801469          1\n",
+            "1       6001        155.358831       39.900112          1\n",
+            "2       6002        231.608922       62.480666          0\n",
+            "3       6003        176.592374       46.977819          0\n",
+            "4       6004        157.344121       40.059755          0\n",
+            "5       6005        250.001898       24.705041          0\n",
+            "6       6006        258.393159       24.457787          0\n",
+            "7       6007        159.338689       39.448009          0\n",
+            "8       6008        168.147780       85.458363          1\n",
+            "9       6009        164.024326       55.621487          0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"\\nPreprocessed dataset snapshot:\")\n",
+        "print(df[[\"PatientID\", \"CholesterolTotal\", \"CholesterolHDL\",\"Cholesterol_Ratio\", \"Diagnosis\"]].head(10).round(3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "93Usl8oeYDT7",
+        "outputId": "ac899a70-081e-41f7-ba5a-515637bfb0ba"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Preprocessed dataset snapshot:\n",
+            "   PatientID  CholesterolTotal  CholesterolHDL  Cholesterol_Ratio  Diagnosis\n",
+            "0       6000           254.271          70.801              3.591          1\n",
+            "1       6001           155.359          39.900              3.894          1\n",
+            "2       6002           231.609          62.481              3.707          0\n",
+            "3       6003           176.592          46.978              3.759          0\n",
+            "4       6004           157.344          40.060              3.928          0\n",
+            "5       6005           250.002          24.705             10.119          0\n",
+            "6       6006           258.393          24.458             10.565          0\n",
+            "7       6007           159.339          39.448              4.039          0\n",
+            "8       6008           168.148          85.458              1.968          1\n",
+            "9       6009           164.024          55.621              2.949          0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"\\nCholesterol_Ratio summary:\")\n",
+        "print(df[\"Cholesterol_Ratio\"].describe().round(2))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ELdUxFPoYM-y",
+        "outputId": "9abf2e4c-e489-45a6-8c0b-bdc49d91ce75"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Cholesterol_Ratio summary:\n",
+            "count    1879.00\n",
+            "mean        4.55\n",
+            "std         2.44\n",
+            "min         1.57\n",
+            "25%         2.80\n",
+            "50%         3.72\n",
+            "75%         5.75\n",
+            "max        14.41\n",
+            "Name: Cholesterol_Ratio, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "\n",
+        "os.makedirs('Dataset', exist_ok=True)\n",
+        "df.to_csv('Dataset/Preprocessed_dataset.csv', index=False)\n",
+        "print(\"Saved complete preprocessed dataset to Dataset/Preprocessed_dataset.csv\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "As7HX-BAhYcq",
+        "outputId": "ef522658-6970-43b2-898d-46739fb0727f"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Saved complete preprocessed dataset to Dataset/Preprocessed_dataset.csv\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
